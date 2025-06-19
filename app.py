@@ -32,22 +32,17 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Get CORS settings from environment
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
-CORS_ALLOW_CREDENTIALS = os.getenv("CORS_ALLOW_CREDENTIALS", "true").lower() == "true"
-CORS_ALLOW_METHODS = os.getenv("CORS_ALLOW_METHODS", "GET,POST,PUT,DELETE,OPTIONS").split(",")
-CORS_ALLOW_HEADERS = os.getenv("CORS_ALLOW_HEADERS", "*").split(",")
+# Get allowed origins from environment variable
+allowed_origins = os.environ.get("ALLOWED_ORIGINS", "*").split(",")
+logger.info(f"Allowed CORS origins: {allowed_origins}")
 
-# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
-    allow_credentials=CORS_ALLOW_CREDENTIALS,
-    allow_methods=CORS_ALLOW_METHODS,
-    allow_headers=CORS_ALLOW_HEADERS,
+    allow_origins=allowed_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
-
-logger.info(f"CORS enabled for origins: {ALLOWED_ORIGINS}")
 
 app.include_router(router)
 

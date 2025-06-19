@@ -1,5 +1,6 @@
 from transformers import TFT5ForConditionalGeneration, AutoTokenizer
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +17,7 @@ def load_tokenizer(model_path):
 
 async def load_models_on_startup():
     try:
-        model_path = "./pretrained/finance_chatbot_0615_1817"
+        model_path = os.environ.get("MODEL_PATH", "./pretrained/finance_chatbot_0619_2007")
         logger.info(f"Loading fine-tuned model from: {model_path}")
         
         model = load_model(model_path)

@@ -4,11 +4,17 @@ import logging
 from src.predict import predict_answer
 from src.loaders import get_models
 from src.models import AnswerResponse, QuestionRequest
+from fastapi.responses import Response
 
 logger = logging.getLogger(__name__)
 
 # Create router
 router = APIRouter()
+
+# Add explicit OPTIONS handler
+@router.options("/predict")
+async def predict_options():
+    return Response(status_code=200)
 
 @router.post("/predict", response_model=AnswerResponse)
 async def predict(request: QuestionRequest):

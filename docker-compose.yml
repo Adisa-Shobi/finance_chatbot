@@ -1,0 +1,16 @@
+services:
+  app:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: DockerFile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app
+      - TF_CPP_MIN_LOG_LEVEL=2
+    env_file:
+      - .env
+    restart: unless-stopped 

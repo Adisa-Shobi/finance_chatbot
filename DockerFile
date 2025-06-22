@@ -9,6 +9,8 @@ COPY requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+# Install TensorFlow with CUDA support
+RUN python3 -m pip install 'tensorflow[and-cuda]'
 
 # Copy the current directory contents into the container
 COPY . .
@@ -20,5 +22,5 @@ ENV TF_CPP_MIN_LOG_LEVEL=2
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
 
-# Run the application
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+# Verify TensorFlow GPU availability at container startup, then run the app
+CMD python3 -c "import tensorflow as tf; print('GPUs:', tf.config.list_physical_devices('GPU'))" && uvicorn app:app --host 0.0.0.0 --port 8000

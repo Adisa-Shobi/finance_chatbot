@@ -11,6 +11,8 @@ services:
     environment:
       - PYTHONPATH=/app
       - TF_CPP_MIN_LOG_LEVEL=2
+      - MODEL_PATH=${MODEL_PATH}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
     env_file:
       - .env
-    restart: unless-stopped 
+    restart: unless-stopped
